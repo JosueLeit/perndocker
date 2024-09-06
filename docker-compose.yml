@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: printerpstgrs-db
+    environment:
+      POSTGRES_USER: printeruser
+      POSTGRES_PASSWORD: printermypassword
+      POSTGRES_DB: printerdatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./backups:/backups
+      - ./custom-init-scripts:/docker-entrypoint-initdb.d 
+      
+volumes:
+  postgres-data:
+    driver: local
