@@ -9,11 +9,11 @@ class Task extends Model {
     public description!: string;
     public deadlineDate!: Date;
     public priority!: 'low' | 'medium' | 'high';
-    public userIdFk!: User;
-    public projectIdFk!: Project;
+    public userIdFk!: string;
+    public projectIdFk!: string;
     public createdAt!: Date;
     public updateAt!: Date;
-    public status!: 'pending' | 'completed';
+    public status!: 'pending' | 'completed' | 'unsigned';
 }
 
 Task.init(
@@ -41,7 +41,17 @@ Task.init(
         },
         userIdFk: {
             type: DataTypes.STRING,
-            allowNull: false,
+            references:{
+                model: User,
+                key: 'id'
+            }
+        },
+        projectIdFk: {
+            type: DataTypes.STRING,
+            references:{
+                model: Project,
+                key: 'id'
+            }
         },
         createdAt: {
             type: DataTypes.DATE,
@@ -52,7 +62,7 @@ Task.init(
             allowNull: false,
         },
         status: {
-            type: DataTypes.ENUM('pending', 'completed'),
+            type: DataTypes.ENUM('pending', 'completed', 'unsigned'),
             allowNull: false,
         },
     },
@@ -60,6 +70,9 @@ Task.init(
         sequelize,
         tableName: 'Task,'
     }
-)
+);
+
+Task.belongsTo(User, { foreignKey: 'userId' });
+Task.belongsTo(Project, { foreignKey: 'projectId' });
 
 export default Task;

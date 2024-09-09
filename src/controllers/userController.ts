@@ -1,25 +1,26 @@
 import {Request, Response} from 'express';
-import userService from '../useCases/user/createUser';
+import userService from '../services/user/createUser';
 
 class UserController {
-  async createUser(req: Request, res: Response): Promise<void> {
+  async createUser(req: Request, res: Response) {
     try {
       const user = await userService.createUser(req.body);
-      const { name, email, role } = req.body;
       res.status(201).json(user);
-    } catch (error: any) {
-      res.status(400).json(error.message);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to create user' });
     }
   }
 
-  async getAllUsers(req: Request, res: Response): Promise<void> {
+  async getAllUsers(req: Request, res: Response) {
     try {
       const users = await userService.getAllUsers();
-      res.status(200).json(users);
-    } catch (error: any) {
-      res.status(400).json(error.message);
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch users' });
     }
   }
+
+  // Outros métodos de controle
 }
 
 export default new UserController();

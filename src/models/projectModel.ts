@@ -10,7 +10,7 @@ class Project extends Model {
     public createdAt!: Date;
     public updateAt!: Date;
     public userAcess!: 'admin' | 'employee';
-    public taskList!: Task[];
+    
 
     
 }
